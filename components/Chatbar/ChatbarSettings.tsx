@@ -1,11 +1,12 @@
 import { SupportedExportFormats } from '@/types/export';
-import { IconFileExport, IconMoon, IconSun } from '@tabler/icons-react';
+import { IconFileExport, IconMoon, IconSun, IconLogout } from '@tabler/icons-react';
 import { useTranslation } from 'next-i18next';
 import { FC } from 'react';
 import { Import } from '../Settings/Import';
 import { Key } from '../Settings/Key';
 import { SidebarButton } from '../Sidebar/SidebarButton';
 import { ClearConversations } from './ClearConversations';
+import { useSession, signOut } from 'next-auth/react'
 
 interface Props {
   lightMode: 'light' | 'dark';
@@ -29,6 +30,7 @@ export const ChatbarSettings: FC<Props> = ({
   onImportConversations,
 }) => {
   const { t } = useTranslation('sidebar');
+  const { data: session } = useSession()
   return (
     <div className="flex flex-col items-center space-y-1 border-t border-white/20 pt-1 text-sm">
       {conversationsCount > 0 ? (
@@ -37,12 +39,13 @@ export const ChatbarSettings: FC<Props> = ({
 
       <Import onImport={onImportConversations} />
 
-      <SidebarButton
+      {/* <SidebarButton
         text={t('Export data')}
         icon={<IconFileExport size={18} />}
         onClick={() => onExportConversations()}
-      />
+      /> */}
 
+ 
       <SidebarButton
         text={lightMode === 'light' ? t('Dark mode') : t('Light mode')}
         icon={
@@ -53,7 +56,17 @@ export const ChatbarSettings: FC<Props> = ({
         }
       />
 
-      <Key apiKey={apiKey} onApiKeyChange={onApiKeyChange} />
+      {session && <SidebarButton
+        text={t('Sign Out')}
+        icon={<IconLogout size={18} />}
+        onClick={(e: any) => {
+          e.preventDefault()
+          signOut()
+        }}
+      />}
+
+      {/* <Key apiKey={apiKey} onApiKeyChange={onApiKeyChange} /> */}
+
     </div>
   );
 };

@@ -1,9 +1,9 @@
-import { FC } from 'react';
+import { FC, MouseEvent } from 'react';
 
 interface Props {
   text: string;
   icon: JSX.Element;
-  onClick: () => void;
+  onClick: (e: MouseEvent<HTMLElement>) => void;
 }
 
 export const SidebarButton: FC<Props> = ({ text, icon, onClick }) => {

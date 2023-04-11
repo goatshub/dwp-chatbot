@@ -31,7 +31,7 @@ export const Import: FC<Props> = ({ onImport }) => {
         }}
       />
 
-      <SidebarButton
+      {/* <SidebarButton
         text={t('Import data')}
         icon={<IconFileImport size={18} />}
         onClick={() => {
@@ -42,7 +42,7 @@ export const Import: FC<Props> = ({ onImport }) => {
             importFile.click();
           }
         }}
-      />
+      /> */}
     </>
   );
 };

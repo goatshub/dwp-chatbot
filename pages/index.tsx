@@ -36,14 +36,19 @@ import { useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import toast from 'react-hot-toast';
 
+import { getSession } from 'next-auth/react';
+import type { Session } from "next-auth"
+
 interface HomeProps {
   serverSideApiKeyIsSet: boolean;
   defaultModelId: OpenAIModelID;
+  session: Session;
 }
 
 const Home: React.FC<HomeProps> = ({
   serverSideApiKeyIsSet,
   defaultModelId,
+  session
 }) => {
   const { t } = useTranslation('chat');
 
@@ -556,6 +561,7 @@ const Home: React.FC<HomeProps> = ({
   // ON LOAD --------------------------------------------
 
   useEffect(() => {
+    
     const theme = localStorage.getItem('theme');
     if (theme) {
       setLightMode(theme as 'dark' | 'light');
@@ -626,8 +632,8 @@ const Home: React.FC<HomeProps> = ({
   return (
     <>
       <Head>
-        <title>Chatbot UI</title>
-        <meta name="description" content="ChatGPT but better." />
+        <title>dwp Chatbot</title>
+        <meta name="description" content="ChatGPT for dwp" />
         <meta
           name="viewport"
           content="height=device-height ,width=device-width, initial-scale=1, user-scalable=no"
@@ -746,7 +752,16 @@ const Home: React.FC<HomeProps> = ({
 };
 export default Home;
 
-export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context)
+  if(!session) {
+    return {
+      redirect: {
+        destination: '/user',
+        permanent: false,
+      }
+    }
+  }
   const defaultModelId =
     (process.env.DEFAULT_MODEL &&
       Object.values(OpenAIModelID).includes(
@@ -757,9 +772,10 @@ export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
 
   return {
     props: {
+      session,
       serverSideApiKeyIsSet: !!process.env.OPENAI_API_KEY,
       defaultModelId,
-      ...(await serverSideTranslations(locale ?? 'en', [
+      ...(await serverSideTranslations(context.locale ?? 'en', [
         'common',
         'chat',
         'sidebar',
