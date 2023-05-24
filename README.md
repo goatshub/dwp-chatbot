@@ -1,4 +1,63 @@
-# Chatbot UI
+# dwp | chatbot
+
+The original project is from [Chatbot-ui](https://github.com/mckaywrigley/chatbot-ui) modified for organization mail access only and using organization API key + remove import/export buttons.
+
+## Deploy
+
+**Vercel**
+
+[Deployed with Vercel](https://vercel.com/dwpservice/dwp-chatbot) on domain [dwp-chatbot](https://dwp-chatbot.vercel.app/).
+
+Check Settings > Environment Variables for the variable used (Remove NEXTAUTH_URL when deployed on Vercel). 
+
+Setting and info of Google auth is in console.cloud.google > chatGPT project > APIs & Services > credentials + OAuth consent screen on dwpService gmail account.
+
+
+| Environment Variable  | Default value                  | Description                                             |
+| --------------------- | ------------------------------ | ------------------------------------------------------- |
+| OPENAI_API_KEY        |                                | The default API key used for authentication with OpenAI |
+| DEFAULT_MODEL         | `gpt-3.5-turbo`                | The default model to use on new conversations           |
+| DEFAULT_SYSTEM_PROMPT | [see here](utils/app/const.ts) | The defaut system prompt to use on new conversations    |
+| GOOGLE_CLIENT_ID      |                                | For Google login auth.                                  |
+| GOOGLE_CLIENT_SECRET  |                                | For Google login auth.                                  |
+| JWT_SECRET            | Random generated               | For NextAuth.                                           |
+| NEXTAUTH_URL          | http://localhost:3000          | For NextAuth. Domain used for testing only              |
+
+## Running Locally
+
+**1. Clone Repo**
+
+```bash
+git clone https://github.com/dwpservice/dwp-chatbot.git
+```
+
+**2. Install Dependencies**
+
+```bash
+npm i
+```
+
+**3. Provide environment variables**
+
+Create a .env.local file in the root of the repo with your OpenAI API Key. You can duplicate .env.local.example file and modify.
+
+**4. Run App**
+
+```bash
+npm run dev
+```
+
+**5. Use It**
+
+You should be able to start chatting.
+
+
+
+___
+
+
+
+# Original chatbot UI README info (for archiving purpose)
 
 Chatbot UI is an advanced chatbot kit for OpenAI's chat models built on top of [Chatbot UI Lite](https://github.com/mckaywrigley/chatbot-ui-lite) using Next.js, TypeScript, and Tailwind CSS.
 
